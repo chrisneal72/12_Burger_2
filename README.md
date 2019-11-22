@@ -19,7 +19,7 @@ We using SQL as a database and we are using Sequelize to pass the data into the 
 ​
 ### Screenshots
 ​
-![Image](assets/images/BBSequel.jpg)
+![Image](public/assets/images/BBSequel.jpg)
 ​
 ### Link
 Check it out! 
