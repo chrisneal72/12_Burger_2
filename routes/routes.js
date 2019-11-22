@@ -1,31 +1,37 @@
 // Dependencies
-var Burgers = require("../models/burgers.js");
+var db = require("../models");
 
 // Routes
 // =============================================================
 module.exports = function (app) {
     app.get("/", function (req, res) {
-        Burgers.findAll().then(function (data) {
-            let burgers = [];
-            let devBurgers = [];
-            data.forEach(function (currentValue) {
-                if (currentValue.devoured) {
-                    devBurgers.push(currentValue);
-                } else {
-                    burgers.push(currentValue);
-                }
+        console.log(db.Burgers)
+        try {
+            db.burgersduex.findAll().then(function (data) {
+                let burgers = [];
+                let devBurgers = [];
+                data.forEach(function (currentValue) {
+                    if (currentValue.devoured) {
+                        devBurgers.push(currentValue);
+                    } else {
+                        burgers.push(currentValue);
+                    }
+                });
+                var hbsObject = {
+                    burger: burgers,
+                    devoured: devBurgers
+                };
+                res.render("burger_lists", hbsObject);
             });
-            var hbsObject = {
-                burger: burgers,
-                devoured: devBurgers
-            };
-            res.render("burger_lists", hbsObject);
-        });
+        } catch (err) {
+            console.log(err);
+            res.status(500).end();
+        }
     });
 
     app.post("/api/burger", function (req, res) {
         let newBurger = req.body
-        Burgers.create({
+        db.burgersduex.create({
             name: newBurger.name,
             devoured: false
         }).then(function (result) {
@@ -36,7 +42,7 @@ module.exports = function (app) {
     });
 
     app.put("/api/burger/:id", function (req, res) {
-        Burgers.update(
+        db.burgersduex.update(
             { devoured: true },
             { returning: true, where: { id: req.params.id } }
         ).then(function (result) {
@@ -45,7 +51,7 @@ module.exports = function (app) {
     });
 
     app.delete("/api/burger/:id", function (req, res) {
-        Burgers.destroy({
+        db.burgersduex.destroy({
             where: { id: req.params.id }
         }
         ).then(function (result) {
