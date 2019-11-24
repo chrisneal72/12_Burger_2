@@ -1,10 +1,12 @@
 // Dependencies
+const util = require("util");
+const path = require("path");
 var db = require("../models");
 
 // Routes
 // =============================================================
 module.exports = function (app) {
-    app.get("/", function (req, res) {
+    app.get("/api/start", function (req, res) {
         console.log(db.Burgers)
         try {
             db.burgersduex.findAll().then(function (data) {
@@ -57,5 +59,9 @@ module.exports = function (app) {
         ).then(function (result) {
             return res.json(result);
         });
+    });
+
+    app.get("*", function (req, res) {
+      res.sendFile(path.join(__dirname, "../app/public/index.html"));
     });
 };
