@@ -9,7 +9,10 @@ module.exports = function (app) {
     app.get("/api/start", function (req, res) {
         console.log(db.Burgers)
         try {
-            db.burgersduex.findAll().then(function (data) {
+            db.burgersduex.findAll({
+                order: [
+                    ['name', 'ASC']]
+            }).then(function (data) {
                 let burgers = [];
                 let devBurgers = [];
                 data.forEach(function (currentValue) {
